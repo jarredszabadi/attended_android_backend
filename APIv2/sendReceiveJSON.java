@@ -1,3 +1,4 @@
+package APIv2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,33 +79,7 @@ public class sendReceiveJSON {
 		return response;
 	}
 
-	public String deleteEvent(String website) {
-		URL url;
-		String response = null;
-		try {
-			url = new URL(website);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setDoOutput(true);
-
-			conn.setRequestMethod("DELETE");
-			conn.connect();
-			conn.getInputStream();
-			// response = getDeleteResponse(conn);
-			return "s";
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return response;
-	}
-
+	
 	
 	
 	public  String createEvent(String urlString, JSONObject tobeCreated,
@@ -131,7 +106,8 @@ public class sendReceiveJSON {
 
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("Authorization", auth_token);
+			conn.setRequestProperty("User_Authorization", auth_token);
+			conn.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
 
 			os = conn.getOutputStream();
 			OutputStreamWriter osw = new OutputStreamWriter(os);
@@ -154,6 +130,13 @@ public class sendReceiveJSON {
 	}
 	
 	
+	
+	
+	
+	
+
+	
+	
 	public  String getCreateResponse(HttpURLConnection c) {
 		StringBuilder res = new StringBuilder();
 		String output;
@@ -173,8 +156,8 @@ public class sendReceiveJSON {
 			e.printStackTrace();
 		}
 		return response;
-	}
-/*
+	}	
+
 	public  String getSingleEvent(String website, String auth_token) {
 		URL url;
 		String response = null;
@@ -182,12 +165,14 @@ public class sendReceiveJSON {
 		try {
 			url = new URL(website);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setDoOutput(true);
+			//conn.setDoOutput(true);
 
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("Authorization", auth_token);
+			conn.setRequestProperty("User_Authorization", auth_token);
+			conn.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
+
 
 			r = getShowResponse(conn);
 			response = r.toString();
@@ -203,6 +188,104 @@ public class sendReceiveJSON {
 			e.printStackTrace();
 		}
 		return response;
+	}
+	
+	public  JSONObject getShowResponse(HttpURLConnection c) {
+		BufferedReader br = null;
+		JSONObject returnObj = new JSONObject();
+		try {
+			br = new BufferedReader(new InputStreamReader((c.getInputStream())));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StringBuilder res = new StringBuilder();
+		String output;
+		try {
+			while ((output = br.readLine()) != null) {
+				res.append(output);
+				// System.out.println(output);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String resultString = res.toString();
+		// resultString = resultString.substring(1,resultString.length()-1); //
+		// remove wrapping "[" and "]"
+		c.disconnect();
+		try {
+			returnObj = new JSONObject(resultString);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnObj;
+	}
+	
+	
+	
+	public String deleteEvent(String auth_token, String website) {
+		URL url;
+		String response = null;
+		try {
+			url = new URL(website);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+
+			conn.setRequestMethod("DELETE");
+			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("User_Authorization", auth_token);
+			conn.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
+			conn.connect();
+			conn.getInputStream();
+			response = getDeleteResponse(conn);
+			
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	
+	public  String getDeleteResponse(HttpURLConnection c){
+		BufferedReader br = null;
+
+		try {
+			br = new BufferedReader(new InputStreamReader((c.getInputStream())));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StringBuilder res = new StringBuilder();
+		String output;
+
+		try {
+			while ((output = br.readLine()) != null) {
+				res.append(output);
+				// System.out.println(output);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String resultString = res.toString();
+		resultString = resultString.substring(1, resultString.length() - 1); // remove
+																				// wrapping
+																				// "["
+																				// and
+																				// "]"
+		c.disconnect();
+
+		return resultString;
 	}
 /*
 	public  String getAllEvents(String website, String auth_token) throws IOException {
@@ -283,40 +366,9 @@ public class sendReceiveJSON {
 		
 	}
 
-	public  JSONObject getShowResponse(HttpURLConnection c) {
-		BufferedReader br = null;
-		JSONObject returnObj = new JSONObject();
-		try {
-			br = new BufferedReader(new InputStreamReader((c.getInputStream())));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		StringBuilder res = new StringBuilder();
-		String output;
-		try {
-			while ((output = br.readLine()) != null) {
-				res.append(output);
-				// System.out.println(output);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String resultString = res.toString();
-		// resultString = resultString.substring(1,resultString.length()-1); //
-		// remove wrapping "[" and "]"
-		c.disconnect();
-		try {
-			returnObj = new JSONObject(resultString);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return returnObj;
-	}
 
-	public  String getDeleteResponse(HttpURLConnection c) {
+
+	public  String getDeleteResponse(HttpURLConnection c){
 		BufferedReader br = null;
 
 		try {
@@ -346,6 +398,6 @@ public class sendReceiveJSON {
 		c.disconnect();
 
 		return resultString;
-	}*/
-
+	}
+*/
 }
