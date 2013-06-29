@@ -13,6 +13,8 @@ public class EventJsonThread extends Thread{
 	//1 = create
 	//2 = show
 	//3 = delete
+	//4 = put
+	//5 = index
  
 	public EventJsonThread(String auth_token) {
 		// TODO Auto-generated constructor stub
@@ -107,6 +109,18 @@ public class EventJsonThread extends Thread{
 						case 3:
 							System.out.println("Deleteing Event At: " + requestURL);
 							returnString = srJSON.deleteEvent(auth_token, requestURL);
+							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
+						break;
+						
+						case 4:
+							System.out.println("Editting Event At: " + requestURL);
+							returnString = srJSON.editEvent(auth_token, requestURL, obj);
+							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
+						break;
+						
+						case 5:
+							System.out.println("Indexing All Events: ");
+							returnString = srJSON.getAllEvents(auth_token, requestURL);
 							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
 						break;
 

@@ -14,6 +14,7 @@ import java.net.URL;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,7 +46,7 @@ public class sendReceiveJSON {
 		return null;
 	}
 
-	public String editEvent(String urlString, JSONObject tobeEdited) {
+	public String editEvent(String auth_token, String urlString, JSONObject tobeEdited) {
 
 		URL url;
 		OutputStream os;
@@ -58,6 +59,8 @@ public class sendReceiveJSON {
 			conn.setRequestMethod("PUT");
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("User_Authorization", auth_token);
+			conn.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
 
 			os = conn.getOutputStream();
 			OutputStreamWriter osw = new OutputStreamWriter(os);
@@ -287,117 +290,70 @@ public class sendReceiveJSON {
 
 		return resultString;
 	}
-/*
-	public  String getAllEvents(String website, String auth_token) throws IOException {
-		URL url = new URL(website);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		
-		
-		String xmlResponse = null;
 
-		try {
-			String url = website;
-			Log.d("getAllEvents", "performing get " + url);
-
-			HttpGet method = new HttpGet(new URI(url));
-			method.addHeader("Authorization", auth_token);
-			HttpResponse response = httpClient.execute(method);
-			if (response != null) {
-				xmlResponse = streamAllEvents(response.getEntity());
-			} else {
-				Log.i("getAllEvents", "got a null response");
-			}
-		} catch (IOException e) {
-			Log.e("Error", "IOException " + e.getMessage());
-		} catch (URISyntaxException e) {
-			Log.e("Error", "URISyntaxException " + e.getMessage());
-		}
-		
-		return xmlResponse;
-		
-		
-
-	}
-
-	
-
-	public  String getCreateResponse(HttpURLConnection c) {
-		StringBuilder res = new StringBuilder();
-		String output;
+	public String getAllEvents(String auth_token, String requestURL){
+		URL url;
 		String response = null;
-		BufferedReader br;
 		try {
-			br = new BufferedReader(new InputStreamReader((c.getInputStream())));
-			while ((output = br.readLine()) != null) {
-				res.append(output);
-			}
+			url = new URL(requestURL);
+			HttpURLConnection c = (HttpURLConnection) url.openConnection();
 
-			response = res.toString();
-			c.disconnect();
-
-		} catch (IOException e) {
+			c.setRequestMethod("GET");
+			c.setRequestProperty("Content-Type", "application/json");
+			c.setRequestProperty("Accept", "application/json");
+			c.setRequestProperty("User_Authorization", auth_token);
+			c.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
+			response = streamAllEvents(c);
+			
+			
+				
+			
+			
+			
+			
+			
+		}
+		catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return response;
-	}
-
-	public  String streamAllEvents(HttpEntity entity) {
-		String response = "";
-
-		try {
-			int length = (int) entity.getContentLength();
-			StringBuffer sb = new StringBuffer(length);
-			InputStreamReader isr = new InputStreamReader(entity.getContent(),
-					"UTF-8");
-			char buff[] = new char[length];
-			int cnt;
-			while ((cnt = isr.read(buff, 0, length - 1)) > 0) {
-				sb.append(buff, 0, cnt);
-			}
-
-			response = sb.toString();
-			isr.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+		catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return response;
 		
 	}
-
-
-
-	public  String getDeleteResponse(HttpURLConnection c){
-		BufferedReader br = null;
-
-		try {
-			br = new BufferedReader(new InputStreamReader((c.getInputStream())));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		StringBuilder res = new StringBuilder();
+	
+	public static String streamAllEvents(HttpURLConnection c){
 		String output;
-
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br;
+		int i=0;
 		try {
+			br = new BufferedReader(new InputStreamReader(
+					(c.getInputStream())));
+			//System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				res.append(output);
-				// System.out.println(output);
+				sb.append(output);
+				System.out.println(i+"AAA "+output);
+				i++;
+
 			}
-		} catch (IOException e) {
+			br.close();
+			
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String resultString = res.toString();
-		resultString = resultString.substring(1, resultString.length() - 1); // remove
-																				// wrapping
-																				// "["
-																				// and
-																				// "]"
-		c.disconnect();
-
-		return resultString;
+		return sb.toString();
 	}
-*/
+
+
 }
