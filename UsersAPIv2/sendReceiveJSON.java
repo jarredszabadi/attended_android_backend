@@ -1,4 +1,4 @@
-package APIv2;
+package UsersAPIv2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,22 +8,21 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.net.URL;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 
 
 public class sendReceiveJSON {
 
 	
-
+/*
+ * AUTH_TOKEN
+ */
 	public JSONObject getAuthObj(String username, String password) {
 		// TODO Auto-generated method stub
 
@@ -45,6 +44,10 @@ public class sendReceiveJSON {
 
 		return null;
 	}
+	
+	/*
+	 * PUT
+	 */
 
 	public String editEvent(String auth_token, String urlString, JSONObject tobeEdited) {
 
@@ -83,10 +86,11 @@ public class sendReceiveJSON {
 	}
 
 	
+	/*
+	 * CREATE
+	 */
 	
-	
-	public  String createEvent(String urlString, JSONObject tobeCreated,
-			String auth_token) {
+	public  String createUser(String urlString, JSONObject tobeCreated, String auth_token) {
 
 		try {
 			if (tobeCreated == null || tobeCreated.isNull("user")) {
@@ -109,7 +113,6 @@ public class sendReceiveJSON {
 
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("User_Authorization", auth_token);
 			conn.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
 
 			os = conn.getOutputStream();
@@ -160,6 +163,10 @@ public class sendReceiveJSON {
 		}
 		return response;
 	}	
+	
+	/*
+	 * SHOW
+	 */
 
 	public  String getSingleEvent(String website, String auth_token) {
 		URL url;
@@ -214,8 +221,6 @@ public class sendReceiveJSON {
 			e.printStackTrace();
 		}
 		String resultString = res.toString();
-		// resultString = resultString.substring(1,resultString.length()-1); //
-		// remove wrapping "[" and "]"
 		c.disconnect();
 		try {
 			returnObj = new JSONObject(resultString);
@@ -226,7 +231,9 @@ public class sendReceiveJSON {
 		return returnObj;
 	}
 	
-	
+	/*
+	 * DESTROY
+	 */
 	
 	public String deleteEvent(String auth_token, String website) {
 		URL url;
@@ -281,15 +288,18 @@ public class sendReceiveJSON {
 			e.printStackTrace();
 		}
 		String resultString = res.toString();
-		resultString = resultString.substring(1, resultString.length() - 1); // remove
-																				// wrapping
-																				// "["
-																				// and
-																				// "]"
+
 		c.disconnect();
 
 		return resultString;
 	}
+	
+	
+	
+	
+	/*
+	 * INDEX
+	 */
 
 	public String getAllEvents(String auth_token, String requestURL){
 		URL url;
@@ -334,16 +344,15 @@ public class sendReceiveJSON {
 		String output;
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br;
-		int i=0;
+		JSONObject data; 
+		
+		
 		try {
 			br = new BufferedReader(new InputStreamReader(
 					(c.getInputStream())));
 			//System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				sb.append(output);
-				System.out.println(i+"AAA "+output);
-				i++;
-
 			}
 			br.close();
 			
@@ -352,6 +361,25 @@ public class sendReceiveJSON {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		try {
+			data = ((JSONObject) new JSONObject(sb.toString())).getJSONObject("data");
+			       
+			JSONArray events = (JSONArray) data.get("Events");
+			JSONObject event;
+			
+			for(int i =0; i<events.length(); i++){
+				event = (JSONObject) events.get(i);
+				System.out.println(event.toString());
+			}
+		}
+		catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		return sb.toString();
 	}
 

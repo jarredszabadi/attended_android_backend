@@ -1,4 +1,4 @@
-package APIv2;
+package EventsAPIv2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,8 +9,7 @@ public class main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//createPostThread t = new createPostThread("jarred", "http://localhost:3000/api/v1/events");
-		//t.start();
+
 		JSONObject obj = new JSONObject();
 		JSONObject event = new JSONObject();
 		JSONObject address = new JSONObject();
@@ -40,15 +39,19 @@ public class main {
 			e.printStackTrace();
 		}
 		
+		
+		
+		
 		/*
-		//create event
+		 * CREATE
+		 */
 		//test constructor 2
 		EventJsonThread t1 = new EventJsonThread("jarred", obj);
 		t1.setRequestURL("http://localhost:3000/api/v1/events"); //change the event number when u test it
 		t1.setMethod(1);
 		t1.start();
 		
-		//create event
+
 		//test constructor 3
 		EventJsonThread t = new EventJsonThread("jarred", "constructor3", "12", "152", "constructor3", "constructor3", "PUT", "1", "constructor3", "2013-12-10 15:15:15",
 				"2013-12-20 15:15:15", "1", "constructor3", "constructor3");
@@ -56,27 +59,35 @@ public class main {
 		t.setMethod(1);
 		t.start();
 		
-		//show 
+		/*
+		 * SHOW
+		 */
 		EventJsonThread t2 = new EventJsonThread("jarred");
 		t2.setRequestURL("http://localhost:3000/api/v1/events/1"); //change the event number when u test it
 		t2.setMethod(2);
 		t2.start();
 		
 		
-		//destroy
+		/*
+		 * DESTROY
+		 */
 		EventJsonThread t3 = new EventJsonThread("jarred");
-		t3.setRequestURL("http://localhost:3000/api/v1/events/1"); //change the event number when u test it
+		t3.setRequestURL("http://localhost:3000/api/v1/events/7"); //change the event number when u test it
 		t3.setMethod(2);
 		t3.start();
-		
-		//put
+	
+		/*
+		 * PUT
+		 */
 		EventJsonThread t4 = new EventJsonThread("jarred", "TEST EDIT", "12", "152", "TEST EDIT", "TEST EDIT", "PUT", "1", "TEST EDIT", "2013-12-10 15:15:15",
 				"2013-12-20 15:15:15", "1", "TEST EDIT", "TEST EDIT");
 		t4.setRequestURL("http://localhost:3000/api/v1/events/1"); //change the event number when u test it
 		t4.setMethod(4);
 		t4.start();
-*/
-		
+
+		/*
+		 * INDEX
+		 */
 		EventJsonThread t5 = new EventJsonThread("jarred");
 		t5.setRequestURL("http://localhost:3000/api/v1/events"); //change the event number when u test it
 		t5.setMethod(5);

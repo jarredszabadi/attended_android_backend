@@ -1,4 +1,4 @@
-package APIv2;
+package EventsAPIv2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +23,9 @@ public class EventJsonThread extends Thread{
 		srJSON = new sendReceiveJSON();
 	}
 	
+	/*
+	 * CONSTRUCTOR 2
+	 */
 	public EventJsonThread(String auth_token, JSONObject obj) {
 		// TODO Auto-generated constructor stub
 
@@ -30,7 +33,9 @@ public class EventJsonThread extends Thread{
 		this.obj = obj;
 		srJSON = new sendReceiveJSON();
 	}
-	
+	/*
+	 * CONSTRUCOTR 3
+	 */
 	public EventJsonThread(String auth_token, String street, String streetNum, String aptNum, String country,
 			String province, String city, String event_id, String title, String start_at, String end_at, String user_id, String description, 
 			String eventType){
@@ -91,39 +96,50 @@ public class EventJsonThread extends Thread{
 			String returnString = new String();
 			
 			switch(method){
-			
-			case 1:
+			/*
+			 * CREATE
+			 */
+			case 1: 
 								
 						System.out.println("Sending: " + obj.toString() + "to "+ requestURL);
 						returnString = srJSON.createEvent(requestURL, obj,auth_token);
 					
 						System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
-						break;
-						case 2: 
+			break;
+						
+			/*
+			 * SHOW
+			 */
+			case 2: 
 							System.out.println("Getting Event At: " + requestURL);
 							returnString = srJSON.getSingleEvent(requestURL, auth_token);
 							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
 						
-						break;
-						
-						case 3:
+			break;
+			/*
+			 * DESTROY	
+			 */
+			case 3:
 							System.out.println("Deleteing Event At: " + requestURL);
 							returnString = srJSON.deleteEvent(auth_token, requestURL);
 							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
-						break;
-						
-						case 4:
+			break;
+			/*
+			 * PUT
+			 */
+			case 4:
 							System.out.println("Editting Event At: " + requestURL);
 							returnString = srJSON.editEvent(auth_token, requestURL, obj);
 							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
-						break;
-						
-						case 5:
+			break;
+			/*
+			 * INDEX
+			 */
+			case 5:
 							System.out.println("Indexing All Events: ");
 							returnString = srJSON.getAllEvents(auth_token, requestURL);
 							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
-						break;
-
+			break;
 			}
 	}
 }
