@@ -31,7 +31,10 @@ public class UserJsonThread extends Thread{
 		srJSON = new sendReceiveJSON();
 	}
 	
-	public UserJsonThread(String username, String email, String password, String password_confirmation, String auth_token){
+	/*
+	 * CONSTRUCTOR 3
+	 */
+	public UserJsonThread(String email, String password, String password_confirmation, String auth_token){
 		obj = new JSONObject();
 		srJSON = new sendReceiveJSON();
 		JSONObject user = new JSONObject();
@@ -43,7 +46,7 @@ public class UserJsonThread extends Thread{
 			user.put("password_confirmation", password_confirmation);
 			//user.put("username", username);
 			//user.put("auth_token", auth_token);
-			obj.put("user", user);
+			obj.put("User", user);
 
 			
 		} catch (JSONException e) {
@@ -81,6 +84,36 @@ public class UserJsonThread extends Thread{
 							returnString = srJSON.createUser(requestURL, obj,auth_token);
 						
 							System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
+				break;
+				case 2: 
+					
+					System.out.println("Getting User At: "+ requestURL);
+					returnString = srJSON.getSingleUser(requestURL, auth_token);
+				
+					System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
+				break;
+				case 3: 
+					
+					System.out.println("Getting All Users: "+ requestURL);
+					returnString = srJSON.getAllUsers(auth_token, requestURL);
+				
+					System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
+				break;
+				
+				case 4: 
+					
+					System.out.println("Deleting User At: "+ requestURL);
+					returnString = srJSON.deleteUser(auth_token, requestURL);
+				
+					System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
+				break;
+				
+				case 5: 
+					
+					System.out.println("Editting User At: "+ requestURL);
+					returnString = srJSON.editUser(auth_token, requestURL, obj);
+				
+					System.out.println("Message from " + requestURL + ": "+ returnString + "\n");
 				break;
 				}
 	}

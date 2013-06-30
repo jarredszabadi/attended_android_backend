@@ -49,7 +49,7 @@ public class sendReceiveJSON {
 	 * PUT
 	 */
 
-	public String editEvent(String auth_token, String urlString, JSONObject tobeEdited) {
+	public String editUser(String auth_token, String urlString, JSONObject tobeEdited) {
 
 		URL url;
 		OutputStream os;
@@ -168,7 +168,7 @@ public class sendReceiveJSON {
 	 * SHOW
 	 */
 
-	public  String getSingleEvent(String website, String auth_token) {
+	public  String getSingleUser(String website, String auth_token) {
 		URL url;
 		String response = null;
 		JSONObject r = new JSONObject();
@@ -235,7 +235,7 @@ public class sendReceiveJSON {
 	 * DESTROY
 	 */
 	
-	public String deleteEvent(String auth_token, String website) {
+	public String deleteUser(String auth_token, String website) {
 		URL url;
 		String response = null;
 		try {
@@ -301,7 +301,7 @@ public class sendReceiveJSON {
 	 * INDEX
 	 */
 
-	public String getAllEvents(String auth_token, String requestURL){
+	public String getAllUsers(String auth_token, String requestURL){
 		URL url;
 		String response = null;
 		try {
@@ -365,7 +365,7 @@ public class sendReceiveJSON {
 		try {
 			data = ((JSONObject) new JSONObject(sb.toString())).getJSONObject("data");
 			       
-			JSONArray events = (JSONArray) data.get("Events");
+			JSONArray events = (JSONArray) data.get("Users");
 			JSONObject event;
 			
 			for(int i =0; i<events.length(); i++){
