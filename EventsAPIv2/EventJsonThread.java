@@ -60,7 +60,7 @@ public class EventJsonThread extends Thread{
 			event.put( "title", title);
 			event.put( "start_at", start_at);
 			event.put( "end_at", end_at);
-			event.put( "address_attributes", address);
+			event.put( "address_string", address);
 			event.put("user_id", user_id);
 			event.put("description", description);
 			event.put("event_type", eventType);
