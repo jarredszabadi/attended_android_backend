@@ -46,7 +46,7 @@ public class sendReceiveJSON {
 	 * CREATE
 	 */
 	
-	public  String createEvent(String urlString, JSONObject toBeFollowed, String auth_token) {
+	public  String createFollow(String urlString, JSONObject toBeFollowed, String auth_token) {
 
 
 		URL url;
@@ -113,78 +113,13 @@ public class sendReceiveJSON {
 		return response;
 	}	
 	
-	/*
-	 * SHOW
-	 */
 
-	public  String getSingleEvent(String website, String auth_token) {
-		URL url;
-		String response = null;
-		JSONObject r = new JSONObject();
-		try {
-			url = new URL(website);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			//conn.setDoOutput(true);
-
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("User_Authorization", auth_token);
-			conn.setRequestProperty("Authorization", "c247233c33aef5cde84c973c474c18c8");
-
-
-			r = getShowResponse(conn);
-			response = r.toString();
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return response;
-	}
-	
-	public  JSONObject getShowResponse(HttpURLConnection c) {
-		BufferedReader br = null;
-		JSONObject returnObj = new JSONObject();
-		try {
-			br = new BufferedReader(new InputStreamReader((c.getInputStream())));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		StringBuilder res = new StringBuilder();
-		String output;
-		try {
-			while ((output = br.readLine()) != null) {
-				res.append(output);
-				// System.out.println(output);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String resultString = res.toString();
-		c.disconnect();
-		try {
-			returnObj = new JSONObject(resultString);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return returnObj;
-	}
 	
 	/*
 	 * DESTROY
 	 */
 	
-	public String deleteEvent(String auth_token, String website) {
+	public String deleteRelationship(String auth_token, JSONObject tobeDeleted,String website) {
 		URL url;
 		String response = null;
 		try {
@@ -250,7 +185,7 @@ public class sendReceiveJSON {
 	 * INDEX
 	 */
 
-	public String getAllEvents(String auth_token, String requestURL){
+	public String getAllRelationships(String requestURL, String auth_token){
 		URL url;
 		String response = null;
 		try {
@@ -314,12 +249,12 @@ public class sendReceiveJSON {
 		try {
 			data = ((JSONObject) new JSONObject(sb.toString())).getJSONObject("data");
 			       
-			JSONArray events = (JSONArray) data.get("Events");
-			JSONObject event;
+			JSONArray users = (JSONArray) data.get("Followed_users");
+			JSONObject user;
 			
-			for(int i =0; i<events.length(); i++){
-				event = (JSONObject) events.get(i);
-				System.out.println(event.toString());
+			for(int i =0; i<users.length(); i++){
+				user = (JSONObject) users.get(i);
+				System.out.println(user.toString());
 			}
 		}
 		catch (JSONException e) {
