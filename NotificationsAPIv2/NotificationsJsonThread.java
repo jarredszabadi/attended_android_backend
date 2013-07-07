@@ -1,22 +1,22 @@
-package FeedsAPIv2;
+package NotificationsAPIv2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class FeedsJsonThread extends Thread{
+public class NotificationsJsonThread extends Thread{
 	private String auth_token;
 	private String requestURL;
 	private sendReceiveJSON srJSON;
 	private JSONObject obj;
 	int method;
 	
-	public FeedsJsonThread(String auth_token){
+	public NotificationsJsonThread(String auth_token){
 		this.auth_token = auth_token;
 		srJSON = new sendReceiveJSON();
 	}
 	
-	public FeedsJsonThread(String auth_token, String user_id){
+	public NotificationsJsonThread(String auth_token, String user_id){
 		this.auth_token = auth_token;
 		obj = new JSONObject();
 		srJSON = new sendReceiveJSON();

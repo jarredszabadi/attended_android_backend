@@ -1,4 +1,4 @@
-package FeedsAPIv2;
+package NotificationsAPIv2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -100,7 +100,7 @@ public class sendReceiveJSON {
 			try {
 				data = ((JSONObject) new JSONObject(sb.toString())).getJSONObject("data");
 				       
-				JSONArray events = (JSONArray) data.get("Events");
+				JSONArray events = (JSONArray) data.get("Notifications");
 				JSONObject event;
 				
 				for(int i =0; i<events.length(); i++){
